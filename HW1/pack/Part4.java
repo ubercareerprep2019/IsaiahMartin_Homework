@@ -1,4 +1,6 @@
 // Part 4 here.....
+import java.lang.Integer;
+import java.util.*;
 
 class Part4_linkedlist<T>{
     listNode<T> head;
@@ -18,7 +20,7 @@ class Part4_linkedlist<T>{
             next = next_node;
         }
         T getValue(){
-            return listNode.data;
+            return data;
         }
     }
 
@@ -52,15 +54,15 @@ class Part4_linkedlist<T>{
     }
     //Adds a single node containing data to a chosen location in the list.
     // If the index is above the size of the list, do nothing.
-    void insert(uint index,T data) {
+    void insert(long index,T data) {
         listNode<T> curr = head;
         listNode<T> next_node = new listNode<T>(data);
-        if(index > size.newValue())
+        if(index > size)
         {
             System.err.println("Index too large");
             return;
         }
-        int spot = index.newValue();
+        int spot = (int)index;
         while(spot > 0)
         {
             curr = curr.next;
@@ -70,14 +72,14 @@ class Part4_linkedlist<T>{
         curr.next = next_node;
     }
     //Erases a single node at the index location in the list.
-    void erase(uint index) {
+    void erase(long index) {
         listNode<T> curr = head;
-        if(index > size.newValue())
+        if(index > size)
         {
             System.err.println("Index too large");
             return;
         }
-        int spot = index.newValue();
+        int spot = (int)index;
         while(spot > 0)
         {
             curr = curr.next;
@@ -86,14 +88,14 @@ class Part4_linkedlist<T>{
         curr.next = curr.next.next;
     }
     //Returns a single node at the index location in the list.
-    listNode<T> elementAt(uint index) {
+    listNode<T> elementAt(long index) {
         listNode<T> curr = head;
-        if(index > size.newValue())
+        if(index > size)
         {
             System.err.println("Index too large");
             return null;
         }
-        int spot = index.newValue();
+        int spot = (int)index;
         while(spot > 0)
         {
             curr = curr.next;
@@ -103,8 +105,8 @@ class Part4_linkedlist<T>{
     }
 
     //Returns the length of the list.
-    uint size(){
-        return (uint)size;
+    long size(){
+        return (long)size;
     }
 
     public static void main(String[] args){
