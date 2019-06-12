@@ -2,46 +2,83 @@
 
 import java.util.ArrayList;
 
-class Part3_stack<E>{
-    ArrayList<E> myStack;
+class Part3_stack<Integer>{
+    ArrayList<Integer> myStack;
+    ArrayList<Integer> minStack;
 
     public Part3_stack(){
-        myStack = new ArrayList<E>();
+        myStack = new ArrayList();
+        minStack = new ArrayList<Integer>();
     }
     //Pushes an integer on top of the stack.
-    private void push(E value){
+    private void push(Integer value){
+        if(isEmpty())
+        {
+            minStack.add(0,value);
+        }
+        else
+        {
+            if((int)value < (int)minStack.get(0))
+            {
+                minStack.add(0,value);
+            }
+        }
         myStack.add(0,value);
     }
     //Removes what is on the top of the stack, and returns that value to the
     //    caller.
-    private E pop(){
+    private Integer pop(){
         if(isEmpty())
         {
             System.err.println("Stack is empty, cannot pop");
             return null;
         }
-        E pop_value = myStack.remove(0);
+        Integer pop_value = myStack.remove(0);
+        if(pop_value == minStack.get(0))
+        {
+            minStack.remove(0);
+        }
         return pop_value;
     }
     //Looks at the top value, and returns it. Does not manipulate the stack.
-    private E top(){
-        return myStack.get(0);
+    private Integer top(){
+        if (!myStack.isEmpty())
+        {
+            return myStack.get(0);
+        }
+        System.err.println("Stack is empty, no top available");
+        return null;
     }
     //Returns a True or False if the stack is Empty or not, respectively.
     private boolean isEmpty(){
         return (myStack.size() == 0);
     }
 
+    private Integer min(){
+        if (!minStack.isEmpty()) {
+            return minStack.get(0);
+        }
+        System.err.println("Stack is empty, no min available");
+        return null;
+    }
+
+    // min(), which returns the minimum element of the stack in O(1) time, as opposed to O(n) time
+
     public static void main(String[] args){
-        Part3_stack<Integer> myStack = new Part3_stack<Integer>();
+        Part3_stack myStack = new Part3_stack();
         myStack.push(10);
         myStack.push(20);
         myStack.push(5);
-        System.out.println(myStack.pop());
-        System.out.println(myStack.pop());
-        System.out.println(myStack.top());
-        System.out.println(myStack.pop());
-        System.out.println(myStack.isEmpty());
-        System.out.println(myStack.pop());
+        System.out.println("MIN: " + myStack.min());
+        System.out.println("POP: " + myStack.pop());
+        System.out.println("MIN: " + myStack.min());
+        System.out.println("POP: " + myStack.pop());
+        System.out.println("PEAK TOP: " + myStack.top());
+        System.out.println("MIN: " + myStack.min());
+        System.out.println("POP: "+ myStack.pop());
+        System.out.println("EMPTY?: "+myStack.isEmpty());
+        System.out.println("POP: "+myStack.pop());
+        System.out.println("PEAK TOP: "+myStack.top());
+        System.out.println("MIN: "+myStack.min());
     }
 }
