@@ -11,7 +11,7 @@ class Part3_stack<Integer>{
         minStack = new ArrayList<Integer>();
     }
     //Pushes an integer on top of the stack.
-    private void push(Integer value){
+    public void push(Integer value){
         if(isEmpty())
         {
             minStack.add(0,value);
@@ -27,7 +27,7 @@ class Part3_stack<Integer>{
     }
     //Removes what is on the top of the stack, and returns that value to the
     //    caller.
-    private Integer pop(){
+    public Integer pop(){
         if(isEmpty())
         {
             System.err.println("Stack is empty, cannot pop");
@@ -41,7 +41,7 @@ class Part3_stack<Integer>{
         return pop_value;
     }
     //Looks at the top value, and returns it. Does not manipulate the stack.
-    private Integer top(){
+    public Integer top(){
         if (!myStack.isEmpty())
         {
             return myStack.get(0);
@@ -50,11 +50,11 @@ class Part3_stack<Integer>{
         return null;
     }
     //Returns a True or False if the stack is Empty or not, respectively.
-    private boolean isEmpty(){
+    public boolean isEmpty(){
         return (myStack.size() == 0);
     }
 
-    private Integer min(){
+    public Integer min(){
         if (!minStack.isEmpty()) {
             return minStack.get(0);
         }

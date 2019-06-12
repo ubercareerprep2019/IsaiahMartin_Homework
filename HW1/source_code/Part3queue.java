@@ -1,41 +1,54 @@
 // Part 3 here.....
 
-import java.util.ArrayList;
 
-class Part3_queue<E>{
-    ArrayList<E> myQueue;
+class Part3_queue{
+    Part3_stack myQueue;
 
     public Part3_queue(){
-        myQueue = new ArrayList<E>();
+        myQueue = new Part3_stack();
     }
     //Pushes an integer on top of the stack.
-    private void enqueue(E value){
-        myQueue.add(myQueue.size(),value);
+    public void enqueue(Integer value){
+        myQueue.push(value);
+        //System.out.println("Queues push: "+value);
+
     }
     //Removes what is on the top of the stack, and returns that value to the
     //    caller.
-    private E dequeue(){
-        if(isEmpty())
+    public Object dequeue(){
+        Part3_stack newQueue = new Part3_stack();
+        while(! myQueue.isEmpty())
         {
-            System.err.println("Queue is empty, cannot dequeue");
-            return null;
+            newQueue.push(myQueue.pop());
         }
-        E dequeue_value = myQueue.remove(0);
-        return dequeue_value;
+        Object value = newQueue.pop();
+        while(! newQueue.isEmpty())
+        {
+            //System.out.println("PUSH: "+newQueue.top());
+            myQueue.push(newQueue.pop());
+        }
+        return value;
     }
     //Returns a True or False if the stack is Empty or not, respectively.
     private boolean isEmpty(){
-        return (myQueue.size() == 0);
+        return myQueue.isEmpty();
     }
 
     public static void main(String[] args){
-        Part3_queue<Integer> myQueue = new Part3_queue<Integer>();
+        Part3_queue myQueue = new Part3_queue();
+        System.out.println("Enqueue 10");
         myQueue.enqueue(10);
+        System.out.println("Enqueue 20");
         myQueue.enqueue(20);
+        System.out.println("Enqueue 5");
         myQueue.enqueue(5);
+        System.out.print("Dequeue: ");
         System.out.println(myQueue.dequeue());
+        System.out.print("Dequeue: ");
         System.out.println(myQueue.dequeue());
+        System.out.print("Dequeue: ");
         System.out.println(myQueue.dequeue());
+        System.out.print("Empty??: ");
         System.out.println(myQueue.isEmpty());
     }
 }
