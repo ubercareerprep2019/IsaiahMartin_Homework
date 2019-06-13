@@ -65,7 +65,7 @@ class Part4_linkedlist<T>{
         listNode<T> new_node = new listNode<T>(data);
         if(index > size)
         {
-            System.err.println("Index too large");
+            System.err.println("Index too large: ");
             return;
         }
         int spot = index;
@@ -76,6 +76,7 @@ class Part4_linkedlist<T>{
         }
         new_node.setNext(curr.getNext());
         curr.setNext(new_node);
+        size++;
     }
     //Erases a single node at the index location in the list.
     void erase(int index) {
@@ -151,6 +152,32 @@ class Part4_linkedlist<T>{
         return false;
     }
 
+    public boolean is_palindrome()
+    {
+        int half = size/2;
+        //System.out.println("half: "+half);
+        if (size % 2 == 0)
+        {
+            for(int i=size-1; i>=half;i--)
+            {
+                //System.out.println(elementAt(i).getValue()+" ... "+elementAt((size-1)-1).getValue());
+                if(elementAt(i).getValue() != elementAt((size-1) - i).getValue())
+                {
+                    return false;
+                }
+            }
+        }
+        else {
+            for (int i = size - 1; i > half; i--) {
+                //System.out.println(elementAt(i).getValue()+"!"+elementAt((size-1)-i).getValue());
+                if (elementAt(i).getValue() != elementAt((size-1) - i).getValue()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args)
     {
         Part4_linkedlist<String> guest_list = new Part4_linkedlist();
@@ -215,6 +242,31 @@ class Part4_linkedlist<T>{
         System.out.print("the current list:\t");
         guest_list.print_all();
         System.out.println("Has Cycle??: "+guest_list.hasCycle());
+        guest_list.erase(1);
+        System.out.print("the current list:\t");
+        guest_list.print_all();
+        System.out.println("Has Cycle??: "+guest_list.hasCycle());
+        //Palindrome test
+        System.out.println("Clearing List...");
+        System.out.println("Reconstructing List...");
+        guest_list.removeAll();
+        guest_list.insert(0,"a");
+        guest_list.insert(1,"b");
+        guest_list.insert(2,"e");
+        guest_list.insert(3,"b");
+        guest_list.insert(4,"a");
+        System.out.println("Palindrome test");
+        guest_list.print_all();
+        System.out.println("Is plaindrome??: "+guest_list.is_palindrome());
+        guest_list.erase(1);
+        guest_list.erase(0);
+        guest_list.print_all();
+        System.out.println("Is plaindrome??: "+guest_list.is_palindrome());
+        guest_list.pushBack("b");
+        guest_list.pushBack("e");
+        guest_list.print_all();
+        System.out.println("Is plaindrome??: "+guest_list.is_palindrome());
+
 
     }
 
