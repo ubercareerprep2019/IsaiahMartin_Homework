@@ -8,7 +8,7 @@ class Part3_stack<Integer>{
 
     public Part3_stack(){
         myStack = new ArrayList();
-        minStack = new ArrayList<Integer>();
+        minStack = new ArrayList();
     }
     //Pushes an integer on top of the stack.
     public void push(Integer value){
