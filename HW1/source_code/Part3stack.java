@@ -5,10 +5,12 @@ import java.util.ArrayList;
 class Part3_stack<Integer>{
     ArrayList<Integer> myStack;
     ArrayList<Integer> minStack;
+    int size;
 
     public Part3_stack(){
         myStack = new ArrayList();
         minStack = new ArrayList();
+        size = 0;
     }
     //Pushes an integer on top of the stack.
     public void push(Integer value){
@@ -24,6 +26,7 @@ class Part3_stack<Integer>{
             }
         }
         myStack.add(0,value);
+        size++;
     }
     //Removes what is on the top of the stack, and returns that value to the
     //    caller.
@@ -34,6 +37,7 @@ class Part3_stack<Integer>{
             return null;
         }
         Integer pop_value = myStack.remove(0);
+        size--;
         if(pop_value == minStack.get(0))
         {
             minStack.remove(0);
@@ -62,6 +66,11 @@ class Part3_stack<Integer>{
         return null;
     }
 
+    public int getSize()
+    {
+        return size;
+    }
+
     // min(), which returns the minimum element of the stack in O(1) time, as opposed to O(n) time
 
     public static void main(String[] args){
@@ -69,15 +78,20 @@ class Part3_stack<Integer>{
         myStack.push(10);
         myStack.push(20);
         myStack.push(5);
+        System.out.println("SIZE: " + myStack.getSize());
         System.out.println("MIN: " + myStack.min());
         System.out.println("POP: " + myStack.pop());
+        System.out.println("SIZE: " + myStack.getSize());
         System.out.println("MIN: " + myStack.min());
         System.out.println("POP: " + myStack.pop());
+        System.out.println("SIZE: " + myStack.getSize());
         System.out.println("PEAK TOP: " + myStack.top());
         System.out.println("MIN: " + myStack.min());
         System.out.println("POP: "+ myStack.pop());
+        System.out.println("SIZE: " + myStack.getSize());
         System.out.println("EMPTY?: "+myStack.isEmpty());
         System.out.println("POP: "+myStack.pop());
+        System.out.println("SIZE: " + myStack.getSize());
         System.out.println("PEAK TOP: "+myStack.top());
         System.out.println("MIN: "+myStack.min());
     }

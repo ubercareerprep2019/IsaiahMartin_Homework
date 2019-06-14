@@ -15,11 +15,11 @@ import java.util.TreeMap;
 public class Part5_HanoiGame {
     int disks;
     TreeMap rods;
-    int dest_rod;
+    int start_place;
 
-    public Part5_HanoiGame(int number_of_disks, int starting_location, int destination_location)
-            {
-                dest_rod = destination_location;
+    public Part5_HanoiGame(int number_of_disks, int starting_location)
+    {
+        start_place = starting_location;
         HashSet<Integer> remaining_rods = new HashSet();
         remaining_rods.add(1);
         remaining_rods.add(2);
@@ -31,8 +31,10 @@ public class Part5_HanoiGame {
             remaining_rods.remove(starting_location);
             rods.put(starting_location, new Part3_stack());
             //top disk is #1, bottom disk is n
-            for (int i=disk; i > 0; i--) {
-                rods.get(starting_location).push(i);
+            for (int i=disks; i >= 1; i--) {
+                Part3_stack start_rod = (Part3_stack)rods.get(starting_location);
+                start_rod.push(i);
+                rods.put(starting_location,start_rod);
             }
         }
         else
@@ -40,96 +42,121 @@ public class Part5_HanoiGame {
             System.out.print("Starting location must be between 1 and 3 as there are 3 rods!");
             return;
         }
-        if(remaining_rods.contains(destination_location)){
-            remaining_rods.remove(destination_location);
-            rods.put(destination_location, new Part3_stack());
-        }
-        else
+        for(int i=1; i<=3;i++)
         {
-            System.out.print("Remaining location must be between 1 and 3, and not the same as starting location!");
-            return;
+            if(remaining_rods.contains(i))
+            {
+                rods.put(i,new Part3_stack());
+                remaining_rods.remove(i);
+            }
         }
-        for(Integer last_spot: remaining_rods)
-        {
-            rods.put(last_spot,new Part3_stack());
-        }
+        System.out.println("\nStarting game, your disks are starting at "+starting_location+" and they must get to another rod");
     }
 
     void moveDisk(int startingRod, int destinationRod)
     {
+        System.out.println("Attempting to move disk from rod "+startingRod+ " to rod "+destinationRod+"...");
         if(startingRod < 1 || startingRod > numberOfRods())
         {
-            System.out.println("rodIndex must be between 1 and 3");
+            System.out.println("\nrodIndex must be between 1 and 3");
             return;
         }
         if(destinationRod < 1 || destinationRod > numberOfRods())
         {
-            System.out.println("rodIndex must be between 1 and 3");
+            System.out.println("\nrodIndex must be between 1 and 3");
             return;
         }
 
         Integer disk = 0;
-        if(rods.get(startingRodRod).isEmpty())
+        if(((Part3_stack)(rods.get(startingRod))).isEmpty())
         {
-            System.out.println("Rod"+startingRod+"currently has no disks");
+            System.out.println("\nRod "+startingRod+" currently has no disks");
             return;
         }
-        else {
-            disk = rods.get(startingRod).pop();
-        }
-        //if destination rod is empty disk can move
-        if(rods.get(destinationRod).isEmpty()) //
+        disk = (Integer)((Part3_stack)rods.get(startingRod)).top();
+        //if destination rod is empty or disk number is smaller (lower number) than disk at destination, disk can move
+        if(((Part3_stack)(rods.get(destinationRod))).isEmpty() || disk < (Integer)((Part3_stack)(rods.get(destinationRod))).top())
         {
-            rods.get(destinationRod).push(disk);
-        }
-        //disk number must be larger (lower number) than disk at destination
-        else if(disk > rods.get(destinationRod).top())
-        {
-            rods.get(destinationRod).push(disk);
+            Part3_stack start_rod = (Part3_stack)rods.get(startingRod);
+            disk = (Integer)start_rod.pop();
+            rods.put(startingRod,start_rod);
+
+            System.out.println("\nMoving disk "+disk+" from rod "+startingRod+ " to rod "+destinationRod);
+            Part3_stack dest_rod = (Part3_stack)rods.get(destinationRod);
+            dest_rod.push(disk);
+            rods.put(destinationRod,dest_rod);
         }
         else
         {
-            System.out.println("disk must be larger (lower number) than disk at destination");
+            System.out.println("\ndisk must be smaller (lower number) than disk at destination");
         }
-
+        win();
     }
 
     ArrayList<Integer> disksAtRod(int rodIndex)
     {
         if(rodIndex < 1 || rodIndex > numberOfRods())
         {
-            System.out.println("rodIndex must be between 1 and 3");
+            System.out.println("\nrodIndex must be between 1 and 3");
             return null;
         }
         ArrayList<Integer> rodDisks = new ArrayList();
         ArrayList<Integer> rtnArray = new ArrayList();
-        while(! rods.get(rodIndex).isEmpty())
+        while(! ((Part3_stack)(rods.get(rodIndex))).isEmpty())
         {
-            rtnArray.add(rods.get(rodIndex).top());
-            rodDisks.add(rods.get(rodIndex).pop());
+            Part3_stack new_rod = (Part3_stack)(rods.get(rodIndex));
+            int disk = (Integer)new_rod.pop();
+            rods.put(rodIndex,new_rod);
+            rodDisks.add(disk);
+            rtnArray.add(disk);
         }
         while(! rodDisks.isEmpty())
         {
-            rods.get(rodIndex).push(rodDisks.remove(0));
+            Part3_stack rod_update = (Part3_stack) rods.get(rodIndex);
+            rod_update.push(rodDisks.remove(rodDisks.size()-1));
+            rods.put(rodIndex,rod_update);
         }
+        System.out.println("Row "+rodIndex+"\t");
+        for(Integer disk: rtnArray)
+        {
+            System.out.println(disk+" ");
+        }
+        System.out.print("\n");
         return rtnArray;
     }
 
     int numberOfRods()
     {
-        return numberOfRods();
+        return 3;
     }
 
     boolean win()
     {
-        if(rods.get(dest_rod).size() == numberOfRods())
+        for(int i=1;i<=3;i++)
         {
-            return true;
+            if(disksAtRod(i).size() == disks && i != start_place)
+            {
+                System.out.println("rod "+i+ " has all disks!");
+                System.out.println("You win!!!");
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
+    }
+
+    public static void main(String[] args)
+    {
+        Part5_HanoiGame game = new Part5_HanoiGame(3,1);
+        System.out.println("Number of rods: "+game.numberOfRods());
+        game.disksAtRod(1);
+        game.moveDisk(1,3);
+        game.moveDisk(1,2);
+        game.moveDisk(3,2);
+        game.moveDisk(1,3);
+        game.moveDisk(2,1);
+        game.moveDisk(2,3);
+        game.moveDisk(3,1);
+        game.moveDisk(1,3);
     }
 
 }
